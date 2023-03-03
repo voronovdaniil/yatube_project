@@ -1,21 +1,29 @@
-{% extends 'base.html' %} 
-{% block title %}
-Записи сообщества {{ group.title }}
+{% extends 'base.html' %}
+
+{% block title %} 
+   Записи сообщества {{group.title}}
 {% endblock %}
+
 {% block content %}
-<div class="container py-5">
-  <h1>Это группа {{ group.title }}</h1>
-  <p>Это описание группы {{ group.description }}</p>
-  <article>
-    {% for post in posts %}
+<h1> {{ group }} </h1>
+    <p> {{ group.description }} </p> 
+{% for post in page_obj %}
+<article>
     <ul>
-      <li>Автор: {{ post.author.get_full_name }}</li>
-      <li>Дата публикации: {{ post.pub_date|date:"d E Y" }}</li>
+        <li>
+            Автор: {{ post.author.get_full_name }}
+        </li>
+        <li>
+            Дата публикации: {{ post.pub_date|date:"d E Y" }}
+        </li>
     </ul>
-    <p>{{ post.text }}</p>
-    {% if not forloop.last %}
-    <hr />
-    {% endif %} {% endfor %}
-  </article>
-</div>
+    <p> 
+        {{ post.text }}
+    </p>
+</article>
+{% if not forloop.last %}<hr>{% endif %}
+{% endfor %} 
+    {% include 'posts/includes/paginator.html' %}
 {% endblock %}
+
+
