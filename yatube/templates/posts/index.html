@@ -1,33 +1,29 @@
-
-
 {% extends 'base.html' %}
-
 {% block title %}
-    Последние обновления на сайте
+  Последние обновления на сайте
 {% endblock %}
-
 {% block content %}
-    <h1> Последние обновления на сайте </h1>
-  {% for post in page_obj %}
-   <article>
-    <ul>
-        <li>
-            Автор: {{ post.author.get_full_name }}
+  {% load cache %}
+  {% cache 20 index_page %}
+    <div class="container py-5">     
+      <h1>Последние обновления на сайте</h1>
+      <article>
+        {% include 'posts/includes/switcher.html' with index=true %}
+        {% for post in page_obj %}
+          {% include 'posts/includes/post.html' with group_link=True author=post.author %}
         </li>
-        <li>
-            Дата публикации: {{ post.pub_date|date:"d E Y" }}
-        </li>
-    </ul>
-    <p>
-     {{ post.text }}
-    </p>
-    {% if post.group_id != NULL %}
-        <a href="{% url 'posts:group_posts' post.group.slug %}">все записи группы</a>
-    {% endif %}
-    </article>
-        {% if not forloop.last %}<hr>{% endif %}
-    {% endfor %} 
-        {% include 'posts/includes/paginator.html' %}
-{% endblock %}
-
-      
+        {% if post.group %}
+          <li class="list-group-item">
+            <b>Просмотреть записи группы:</b>
+            <a href="{% url 'posts:group_list' post.group.slug %}">{{ post.group.title }}</a>
+          </li>
+        {% endif %}  
+          <li class='list_group_item'>
+          <a href="{% url 'posts:post_detail' post.id %}">подробная информация</a>
+          </li>
+          {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
+      </article>
+    </div>
+  {% endcache %}   
+{% endblock %} 

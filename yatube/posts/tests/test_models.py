@@ -1,29 +1,28 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ..models import Group, Post
+from posts.models import Group, Post, User
 
-User = get_user_model()
+AUTHOR = 'auth'
+GROUP_TITLE = 'Тестовая группа'
+GROUP_SLUG = 'test-slug'
+POST_TEXT = 'Для проверки укорачивания длины здесь больше 15 символов'
 
 
 class PostModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.user = User.objects.create_user(username='auth')
+        cls.user = User.objects.create_user(username=AUTHOR)
         cls.group = Group.objects.create(
-            title='Тестовая группа',
-            slug='Тестовый слаг',
-            description='Тестовое описание',
+            title=GROUP_TITLE,
+            slug=GROUP_SLUG,
         )
         cls.post = Post.objects.create(
             author=cls.user,
-            text='Тестовая группа',
+            text=POST_TEXT,
         )
 
     def test_models_have_correct_object_names(self):
         """Проверяем, что у моделей корректно работает __str__."""
-        post = PostModelTest.post
-        group = PostModelTest.group
-        self.assertEqual(group.title, str(group))
-        self.assertEqual(post.text[:15], str(post))
+        self.assertEqual(self.post.text[:15], str(self.post))
+        self.assertEqual(self.group.title, str(self.group))

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+  Посты авторов, на которых вы подписаны
+{% endblock %}
+{% block content %}
+  <div class="container py-5">     
+    <h1>Посты авторов, на которых вы подписаны</h1>
+    <article>
+      {% include 'posts/includes/switcher.html' with follow=true %}
+      {% for post in page_obj %}
+        {% include 'posts/includes/post.html' %}
+		{% if not forloop.last %}<hr>{% endif %}
+      {% endfor %} 
+      {% include 'includes/paginator.html' %}
+    </article>
+  </div>   
+{% endblock %} 

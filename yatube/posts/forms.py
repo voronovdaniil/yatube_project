@@ -1,20 +1,16 @@
 from django import forms
-from django.forms import ModelForm
 
 from .models import Post
+from .models import Comment
 
 
-class PostForm(ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('text', 'group')
-        labels = {
-            'group': ('Группа'),
-        }
-        widgets = {
-            'text': forms.Textarea(attrs={'rows': 10, 'cols': 40}),
-        }
-        help_texts = {
-            'text': 'Текст нового поста',
-            'group': 'Группа, к которой будет относиться пост',
-        }
+        fields = ('text', 'group', 'image')
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text', )

@@ -3,7 +3,6 @@ from django.contrib.auth.views import (LoginView,
                                        PasswordResetView,
                                        PasswordChangeView)
 from django.urls import path
-
 from . import views
 
 app_name = 'users'
@@ -24,13 +23,13 @@ urlpatterns = [
 
         'password_reset_form/',
         PasswordResetView.as_view(
-            template_name='users/password_reset_form.html'),
-        name='password_reset_form',
+            template_name='users/password_reset.html'),
+        name='password_reset',
     ),
     path(
         'password_change_form/',
         PasswordChangeView.as_view(
-            template_name='users/password_change_form.html'),
-        name='password_change_form',
+            template_name='users/password_change.html'),
+        name='password_change',
     ),
 ]

@@ -59,7 +59,9 @@
             <button type="submit" class="btn btn-primary">
               Войти
             </button>
-            <a href="{% url 'users:password_reset_form' %}" class="btn btn-link">
+            <!-- Тест на внимательность. Без переопределения шаблона этого адреса
+            не существует. Нужно что-то делать, иначе все упадет -->
+            <!-- <a href="" class="btn btn-link"> -->
               Забыли пароль?
             </a>
           </div>
