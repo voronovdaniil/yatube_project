@@ -24,6 +24,7 @@
 * CSS
 * JS
 * HTML
+* Bootstrap
 
 Установка проекта из репозитория (Linux и macOS)
 ----------
