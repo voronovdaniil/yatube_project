@@ -30,9 +30,8 @@
 
 1. Клонировать репозиторий и перейти в него в командной строке:
 ```bash
-git clone git@github.com:NikitaChalykh/YaTube.git
-
-cd YaTube
+git@github.com:voronovdaniil/yatube_project.git
+cd yatube_project
 ```
 2. Cоздать и активировать виртуальное окружение:
 ```bash
