@@ -16,11 +16,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.TextField(verbose_name='Текст комментария')),
-                ('created', models.DateTimeField(auto_now_add=True, verbose_name='Дата комментария')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to=settings.AUTH_USER_MODEL, verbose_name='Автор')),
-                ('post', models.ForeignKey(on_delete=True, related_name='comments', to='posts.Post', verbose_name='Пост')),
+                ('created', models.DateTimeField(
+                    auto_now_add=True, verbose_name='Дата комментария')),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='comments', to=settings.AUTH_USER_MODEL, verbose_name='Автор')),
+                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='comments', to='posts.Post', verbose_name='Пост')),
             ],
             options={
                 'verbose_name': ('Комментарий',),

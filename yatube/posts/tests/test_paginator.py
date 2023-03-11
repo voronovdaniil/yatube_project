@@ -2,29 +2,27 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from posts.models import Post, User, Group
-from posts.settings import POSTS_PER_PAGE
+from posts.config import POSTS_PER_PAGE
 
-AUTHOR = 'auth'
-GROUP_TITLE = 'Тестовая группа'
-GROUP_SLUG = 'test-slug'
-POST_TEXT = 'Тестовый текст'
-INDEX_URL = reverse('posts:index')
-GROUP_LIST_URL = reverse('posts:group_list', kwargs={'slug': GROUP_SLUG})
-PROFILE_URL = reverse('posts:profile', kwargs={'username': AUTHOR})
+
 
 
 class PaginatorViewsTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.author = User.objects.create_user(username=AUTHOR)
+        cls.AUTHOR = 'auth'
+        cls.GROUP_TITLE = 'Тестовая группа'
+        cls.GROUP_SLUG = 'test-slug'
+        cls.POST_TEXT = 'Тестовый текст'
+        cls.author = User.objects.create_user(username=cls.AUTHOR)
         cls.group = Group.objects.create(
-            title=GROUP_TITLE,
-            slug=GROUP_SLUG)
+            title=cls.GROUP_TITLE,
+            slug=cls.GROUP_SLUG)
         cls.posts_amount = POSTS_PER_PAGE + 3
         bulk_posts = [
             Post(
-                text=POST_TEXT,
+                text=cls.POST_TEXT,
                 author=cls.author,
                 group=cls.group,
             )
@@ -37,15 +35,30 @@ class PaginatorViewsTest(TestCase):
         self.author_client.force_login(self.author)
 
     def test_paginator(self):
-        urls = {
-            INDEX_URL: POSTS_PER_PAGE,
-            INDEX_URL + '?page=2': 3,
-            GROUP_LIST_URL: POSTS_PER_PAGE,
-            GROUP_LIST_URL + '?page=2': 3,
-            PROFILE_URL: POSTS_PER_PAGE,
-            PROFILE_URL + '?page=2': 3
+        first_page = POSTS_PER_PAGE
+        second_page = 3
+        paginator_data = {
+            'index': reverse('posts:index'),
+            'group': reverse(
+                'posts:group_list',
+                kwargs={'slug': self.GROUP_SLUG}
+            ),
+            'profile': reverse(
+                'posts:profile',
+                kwargs={'username': self.AUTHOR}
+            )
         }
-        for url, number in urls.items():
-            with self.subTest(url=url):
-                response = self.client.get(url)
-                self.assertEqual(len(response.context['page_obj']), number)
+        for paginator_place, paginator_page in paginator_data.items():
+            with self.subTest(paginator_place=paginator_place):
+                response_page_1 = self.client.get(paginator_page)
+                response_page_2 = self.client.get(
+                    paginator_page + '?page=2'
+                )
+                self.assertEqual(len(
+                    response_page_1.context['page_obj']),
+                    first_page
+                )
+                self.assertEqual(len(
+                    response_page_2.context['page_obj']),
+                    second_page
+                )

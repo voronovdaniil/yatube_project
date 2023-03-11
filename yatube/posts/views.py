@@ -5,11 +5,11 @@ from django.shortcuts import render, get_object_or_404
 
 from .forms import PostForm, CommentForm
 from .models import Post, Group, User, Follow, Comment
-from .settings import POSTS_PER_PAGE
+from .config import POSTS_PER_PAGE
 
 
 def pagination(request, posts):
-    return(Paginator(posts, POSTS_PER_PAGE).get_page(request.GET.get('page')))
+    return Paginator(posts, POSTS_PER_PAGE).get_page(request.GET.get('page'))
 
 
 def index(request):
