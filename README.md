@@ -20,7 +20,7 @@
 * Django 2.2 
 * Unittest
 * Pytest
-* SQLite3
+* Postgresql
 * CSS
 * JS
 * HTML
